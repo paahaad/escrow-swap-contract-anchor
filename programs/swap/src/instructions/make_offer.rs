@@ -27,7 +27,7 @@ pub struct MakeOffer<'info> {
         associated_token::authority = maker,
         associated_token::token_program = token_program
     )]
-    pub ata_token_a: InterfaceAccount<'info, TokenAccount>,
+    pub maker_ata_a: InterfaceAccount<'info, TokenAccount>,
 
     #[account(
         init,
@@ -60,7 +60,7 @@ pub struct MakeOffer<'info> {
 pub fn send_offered_to_vault(ctx: &Context<MakeOffer>, token_a_offered_amount: u64) -> Result<()> {
     msg!("Welcome {}", ctx.program_id);
     tranfer_token(
-        &ctx.accounts.ata_token_a, 
+        &ctx.accounts.maker_ata_a, 
         &ctx.accounts.valut, 
         &token_a_offered_amount, 
         &ctx.accounts.token_mint_a, 
@@ -74,9 +74,9 @@ pub fn save_offer(ctx: Context<MakeOffer>, id: i64, token_b_wanted_amount: u64) 
         id,
         maker: ctx.accounts.maker.key(),
         token_mint_a: ctx.accounts.token_mint_a.key(),
-        tokne_mint_b: ctx.accounts.token_mint_b.key(),
+        token_mint_b: ctx.accounts.token_mint_b.key(),
         wannted_amount: token_b_wanted_amount,
-        dump: ctx.bumps.offer
+        bump: ctx.bumps.offer
     });
     Ok(())
 }
